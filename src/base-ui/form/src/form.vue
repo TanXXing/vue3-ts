@@ -99,7 +99,7 @@ export default defineComponent({
     let formData = ref({ ...props.modelValue })
 
     // 监听modelValue的变化
-    /* watch(
+    watch(
       () => props.modelValue,
       (newValue) => {
         formData.value = newValue
@@ -108,7 +108,7 @@ export default defineComponent({
       {
         deep: true
       }
-    ) */
+    )
 
     watch(
       formData,
