@@ -46,14 +46,12 @@ export default defineComponent({
 
     const handleResetClick = () => {
       // 重置数据
-      formData.value = {}
+      // formData.value = {}
       // console.log(formData)
 
-      /* for (const key in formDataOrigin) {
+      for (const key in formDataOrigin) {
         formData.value[key] = formDataOrigin[key]
-      } */
-
-      
+      }
     }
     return {
       formData,

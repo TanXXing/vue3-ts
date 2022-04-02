@@ -99,7 +99,7 @@ export default defineComponent({
     let formData = ref({ ...props.modelValue })
 
     // 监听modelValue的变化
-    watch(
+    /* watch(
       () => props.modelValue,
       (newValue) => {
         formData.value = newValue
@@ -108,15 +108,11 @@ export default defineComponent({
       {
         deep: true
       }
-    )
+    ) */
 
     watch(
       formData,
       (newValue) => {
-        console.log('侦听到了吗')
-
-        console.log(formData.value)
-        console.log(props.modelValue)
         emit('update:modelValue', newValue)
       },
       {
