@@ -30,7 +30,11 @@ import {
   ElTable,
   ElTableColumn,
   ElPagination,
-  ElConfigProvider
+  ElConfigProvider,
+  ElImage,
+  ElDialog,
+  ElTree,
+  ElCard
 } from 'element-plus'
 
 import type { App } from 'vue'
@@ -67,7 +71,11 @@ const components = [
   ElTable,
   ElTableColumn,
   ElPagination,
-  ElConfigProvider
+  ElConfigProvider,
+  ElImage,
+  ElDialog,
+  ElTree,
+  ElCard
 ]
 
 export default function (app: App) {

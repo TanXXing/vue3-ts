@@ -11,6 +11,8 @@ import type { IAccount } from '@/service/login/types'
 
 import { mapMenusToRoutes } from '@/utils/index'
 
+import { mapMenuToPermission } from '@/utils/map-menus'
+
 import {
   accountLoginRequest,
   userInfoRequestById,
@@ -23,7 +25,8 @@ const loginModule: Module<ILoginState, IRootState> = {
     return {
       token: '',
       userInfo: {},
-      userMenus: []
+      userMenus: [],
+      userPermissions: []
     }
   },
   getters: {},
@@ -44,15 +47,19 @@ const loginModule: Module<ILoginState, IRootState> = {
 
       // const router = useRouter()
 
-    
       // 注册动态路由(仅仅是注册动态路由, 并没有实现路由的跳转)
       for (const route of dynamicRegisterRoutes) {
         router.addRoute('main', route)
       }
+
+      // 获取某个用户所有的权限
+      const userPermissions = mapMenuToPermission(state.userMenus)
+
+      state.userPermissions = userPermissions
     }
   },
   actions: {
-    async accountLoginAction({ commit }, payload: IAccount) {
+    async accountLoginAction({ commit, dispatch }, payload: IAccount) {
       // 1. 实现登录逻辑
       const loginResult = await accountLoginRequest(payload)
 
@@ -76,6 +83,8 @@ const loginModule: Module<ILoginState, IRootState> = {
       // 3. 请求用户菜单
       const userMenusResult = await userMenusRequestByRoleId(userInfo.role.id)
 
+      // console.log(userMenusResult)
+
       const userMenus = userMenusResult.data
 
       // 缓存userMenus的数据(利用vuex和localStorage)
@@ -84,9 +93,15 @@ const loginModule: Module<ILoginState, IRootState> = {
 
       // 4. 跳转到首页
       router.push('/main')
+
+      // 5. 登录后，保证获取到token之后，再获取department和role的数据
+      dispatch('getInitialDataAction', null, { root: true })
     },
 
-    loadLocalLogin({ commit }) {
+    loadLocalLogin({ commit, dispatch }) {
+      // 防止刷新浏览器之后，vuex中的department和role的数据丢失
+      dispatch('getInitialDataAction', null, { root: true })
+
       const token = localCache.getCache('token')
       if (token) {
         commit('changeToken', token)

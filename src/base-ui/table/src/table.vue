@@ -13,6 +13,7 @@
       style="width: 100%"
       border
       @selection-change="handelSelectionChange"
+      v-bind="childrenProps"
     >
       <el-table-column v-if="isShowSelectionColumn" type="selection">
       </el-table-column>
@@ -24,7 +25,7 @@
         align="center"
       ></el-table-column>
       <template v-for="propItem in propList" :key="propItem.prop">
-        <el-table-column v-bind="propItem" align="center">
+        <el-table-column v-bind="propItem" align="center" show-overflow-tooltip>
           <template #default="scope">
             <slot :name="propItem.slotName" :row="scope.row">
               {{ scope.row[propItem.prop] }}
@@ -33,21 +34,20 @@
         </el-table-column>
       </template>
     </el-table>
-    <div class="footer">
-      <!--  <slot name="footer">
+    <div class="footer" v-if="isShowFooter">
+      <slot name="footer">
         <el-pagination
-          v-model:currentPage="currentPage4"
-          v-model:page-size="pageSize4"
-          :page-sizes="[100, 200, 300, 400]"
-          :small="small"
-          :disabled="disabled"
-          :background="background"
+          v-model:currentPage="page.current"
+          v-model:page-size="page.pageSize"
+          :page-sizes="[10, 20, 30, 40]"
+          small="small"
+          background="background"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
+          :total="listCount"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         />
-      </slot> -->
+      </slot>
     </div>
   </div>
 </template>
@@ -56,7 +56,7 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  emits: ['selectionChange'],
+  emits: ['selectionChange', 'update:page'],
   props: {
     title: {
       type: String,
@@ -66,6 +66,10 @@ export default defineComponent({
     dataList: {
       type: Array,
       required: true
+    },
+    listCount: {
+      type: Number,
+      default: 0
     },
     propList: {
       type: Array,
@@ -78,14 +82,36 @@ export default defineComponent({
     isShowSelectionColumn: {
       type: Boolean,
       default: false
+    },
+    page: {
+      type: Object,
+      default: () => ({ currentPage: 1, pageSize: 10 })
+    },
+    childrenProps: {
+      type: Object,
+      default: () => ({})
+    },
+    isShowFooter: {
+      type: Boolean,
+      default: true
     }
   },
   setup(props, { emit }) {
     const handelSelectionChange = (val: any[]) => {
       emit('selectionChange', val)
     }
+
+    const handleSizeChange = (pageSize: number) => {
+      emit('update:page', { ...props.page, pageSize: pageSize })
+    }
+
+    const handleCurrentChange = (currentPage: number) => {
+      emit('update:page', { ...props.page, currentPage: currentPage })
+    }
     return {
-      handelSelectionChange
+      handelSelectionChange,
+      handleSizeChange,
+      handleCurrentChange
     }
   }
 })

@@ -1,16 +1,27 @@
 <template>
   <div class="Imenu">
-    <h2>menu</h2>
+    <page-content
+      :contentTableConfig="contentTableConfig"
+      pageName="menu"
+    ></page-content>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 
+import { contentTableConfig } from './config/content.config'
+import PageContent from '@/components/page-content/index'
+
 export default defineComponent({
   name: 'Imenu',
+  components: {
+    PageContent
+  },
   setup() {
-    return {}
+    return {
+      contentTableConfig
+    }
   }
 })
 </script>

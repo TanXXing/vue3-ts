@@ -7,7 +7,11 @@
       <el-row>
         <template v-for="item in formItems" :key="item.label">
           <el-col v-bind="colLayout">
-            <el-form-item :label="item.label" :style="itemStyle">
+            <el-form-item
+              :label="item.label"
+              :style="itemStyle"
+              v-if="!item.isHidden"
+            >
               <template
                 v-if="item.type === 'input' || item.type === 'password'"
               >
@@ -50,7 +54,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, watch, ref } from 'vue'
+import { defineComponent, PropType, ref, watch } from 'vue'
 import { IFormItem } from '@/base-ui/form/index'
 
 export default defineComponent({
@@ -96,19 +100,8 @@ export default defineComponent({
     ，使得在form.vue组件中的formData进行更新呢？就可以达到下面代码再次执行的效果
     const formData = ref({ ...props.modelValue })
     */
-    let formData = ref({ ...props.modelValue })
 
-    // 监听modelValue的变化
-    watch(
-      () => props.modelValue,
-      (newValue) => {
-        formData.value = newValue
-        // emit('update:modelValue', newValue)
-      },
-      {
-        deep: true
-      }
-    )
+    const formData = ref({ ...props.modelValue })
 
     watch(
       formData,
@@ -119,9 +112,7 @@ export default defineComponent({
         deep: true
       }
     )
-    return {
-      formData
-    }
+    return { formData }
   }
 })
 </script>

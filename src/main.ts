@@ -20,15 +20,13 @@ const app = createApp(rootApp)
 // registerApp(app)
 
 app.use(globalRegister)
-// 初始化store中的某些数据，避免vuex中的数据在登录后，因为某些情况而消失
 
+// 初始化store中的某些数据，避免vuex中的数据在登录后，因为“刷新”或者是其它的情况而导致vuex中的数据消失
 app.use(store)
 
 setupStore()
 
 app.use(router)
-
-
 
 app.mount('#app')
 

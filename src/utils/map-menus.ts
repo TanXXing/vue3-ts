@@ -51,4 +51,43 @@ export function mapMenusToRoutes(menus: any[]): RouteRecordRaw[] {
   return routes
 }
 
-export { firstMenu }
+// 根据菜单获取所有的按钮权限
+const mapMenuToPermission = (userMenus: any[]) => {
+  const userPermissions: string[] = []
+
+  const _getUserPermission = (menu: any) => {
+    for (const item of menu) {
+      if (item.type === 1 || item.type === 2) {
+        _getUserPermission(item.children ?? [])
+      } else if (item.type === 3) {
+        userPermissions.push(item.permission)
+      }
+    }
+  }
+
+  _getUserPermission(userMenus)
+
+  // 返回该用户所拥有的所有权限的数组
+  return userPermissions
+}
+
+// 将roleList中的menusList中的叶子节点,映射为包含其中id的数组
+export function mapMenusToId(menus: any[]) {
+  const checkedLeafKeys: number[] = []
+
+  const _getCheckedKey = (menus: any) => {
+    for (const menu of menus) {
+      if (menu.children) {
+        _getCheckedKey(menu.children)
+      } else {
+        // 收集叶子节点的id
+        checkedLeafKeys.push(menu.id)
+      }
+    }
+  }
+  _getCheckedKey(menus)
+
+  return checkedLeafKeys
+}
+
+export { firstMenu, mapMenuToPermission }

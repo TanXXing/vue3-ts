@@ -19,7 +19,7 @@ const propList = [
     minWidth: '100',
     slotName: 'updateAt'
   },
-  { label: '操作', slotName: 'handle' }
+  { label: '操作', slotName: 'handler' }
 ]
 
 const contentTableConfig = {

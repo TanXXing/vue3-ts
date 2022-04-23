@@ -168,7 +168,7 @@ class XXRequest {
   }
 
   // patch请求
-  patch<T>(config: XXRequestConfig<T>): Promise<T> {
+  patch<T = any>(config: XXRequestConfig<T>): Promise<T> {
     return this.request({ ...config, method: 'PATCH' })
   }
 }

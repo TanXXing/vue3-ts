@@ -36,19 +36,73 @@ import system from './main/system/system'
 
 import login from './login/login'
 
+import dashboard from './main/analysis/dashboard'
+
+import { requestPageListData } from '@/service/main/system/index'
+
 const store = createStore<IRootState>({
   state: () => {
     return {
       name: 'why',
-      age: 18
+      age: 18,
+      entireDepartment: [],
+      entireRole: [],
+      entireMenu: []
     }
   },
   getters: {},
-  mutations: {},
-  actions: {},
+  mutations: {
+    changeEntireDepartment(state, payLoad: any) {
+      state.entireDepartment = payLoad.departmentList
+    },
+    changeEntireRole(state, payLoad: any) {
+      state.entireRole = payLoad.roleList
+    },
+    changeEntireMenu(state, payLoad: any) {
+      state.entireMenu = payLoad.menuList
+    }
+  },
+  actions: {
+    async getInitialDataAction({ commit }) {
+      // 1. 请求所有部门的数据
+      const departmentResult = await requestPageListData('/department/list', {
+        offset: 0,
+        size: 1000
+      })
+
+      // 获取list并存储到entireDepartment
+      const { list: departmentList } = departmentResult.data
+
+      commit('changeEntireDepartment', {
+        departmentList
+      })
+
+      // 1. 请求所有角色的数据
+      const roleResult = await requestPageListData('/role/list', {
+        offset: 0,
+        size: 1000
+      })
+      // 获取list并存储到entireRole
+      const { list: roleList } = roleResult.data
+
+      commit('changeEntireRole', {
+        roleList
+      })
+
+      // 3. 请求所有的(完整的)菜单数据
+      const menuResult = await requestPageListData('/menu/list', {})
+
+      const { list: menuList } = menuResult.data
+
+      commit('changeEntireMenu', {
+        menuList
+      })
+    }
+  },
   modules: {
     login,
-    system
+    system,
+    dashboard
   }
 })
 
