@@ -118,6 +118,14 @@ export default defineComponent({
       getPageData()
     })
 
+    /*
+    这个地方要使用计算属性，因为，当点击系统管理中的用户管理时，我们会发起请求获取用户的数据
+    请求是异步的，这个时候，数据，可能还没有请求下来，因此，通过computed获得dataList,
+    其中，计算属性中是有依赖一个getter的，但是，getter中对应的pageListData其实也是可以看作
+    是一个计算属性的，因此，通过这个pageListData也是一个计算属性，然后，来依赖store中的响应式数据，
+    当store中userList数据发生变化时，此时的dataList会自动更新
+    */
+
     const dataList = computed(() =>
       store.getters['system/pageListData'](props.pageName)
     )

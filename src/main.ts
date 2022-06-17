@@ -9,7 +9,7 @@ import { globalRegister } from './global/index'
 
 // import xxRequest from './service/index'
 
-// 引入全局样式
+// 引入全局样式(已经安装了normalize.css的模块，npm install)
 import 'normalize.css'
 
 // 自己定义一些样式
@@ -21,9 +21,9 @@ const app = createApp(rootApp)
 
 app.use(globalRegister)
 
-// 初始化store中的某些数据，避免vuex中的数据在登录后，因为“刷新”或者是其它的情况而导致vuex中的数据消失
 app.use(store)
 
+// 初始化store中的某些数据，避免vuex中的数据在登录后，因为“刷新”或者是其它的情况而导致vuex中的数据消失
 setupStore()
 
 app.use(router)

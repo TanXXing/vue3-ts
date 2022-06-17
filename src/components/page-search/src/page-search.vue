@@ -40,20 +40,23 @@ export default defineComponent({
     const formDataOrigin: any = {}
 
     const filedsInFormItems = props.searchFormConfig.formItems ?? []
-    
+
     // 获取配置文件中的字段
     for (const formItem of filedsInFormItems) {
       formDataOrigin[formItem['field']] = ''
     }
 
-    const formData = ref<any>(formDataOrigin)
+    let formData = ref<any>(formDataOrigin)
 
     const handleResetClick = () => {
       // 发出重置事件
       emit('resetBtnClick')
+
       for (const key in formDataOrigin) {
         formData.value[key] = formDataOrigin[key]
       }
+
+      // console.log(formData.value)
     }
 
     const handleQueryClick = () => {

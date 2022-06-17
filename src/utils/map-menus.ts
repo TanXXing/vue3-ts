@@ -13,22 +13,41 @@ export function mapMenusToRoutes(menus: any[]): RouteRecordRaw[] {
   1. 先去加载默认所有的routes
   */
   const allRoutes: RouteRecordRaw[] = []
-  const routeFiles = require.context('../router/main', true, /\.ts/)
+
+  /*
+  这里的第二个参数如果为true，则不仅包含当前夹main文件夹下的以.ts结尾的文件，还包含
+  ，main文件下的子文件夹里面以.ts结尾的文件
+  */
+  const routeFiles = require.context('../router/main', true, /\.ts$/)
+
+  // console.log('这是获得的routeFiles')
+
+  // console.log(routeFiles)
+
+  // console.log('这是获得的routeFiles.keys()')
+
+  // console.log(routeFiles.keys())
 
   routeFiles.keys().forEach((key) => {
     /*
     ./analysis/dashboard/dashboard.ts
     */
+
+    // 这个不就是导入对象的操作吗？common js的导入方式
     const route = require('../router/main' + key.slice(1))
 
     // 往allRoutes中添加/router/main下面所有的路由对象
     allRoutes.push(route.default)
+
+    // console.log('这是allRoutes')
+
+    // console.log(allRoutes)
   })
 
   // 2. 根据菜单获取需要动态注册的路由(route)
   const _recurseGetRoute = (menus: any[]) => {
     for (const menu of menus) {
-      // 找到了一级菜单，此时,判断它的url是否存在于默认路由
+      // 找到了一级菜单，此时,判断它的url是否存在于默认路由(这里百度后，一级菜单和二级菜单，和这里写的是反的)
       if (menu.type === 2) {
         const registeringRoute = allRoutes.find(
           (route) => route.path === menu.url

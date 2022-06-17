@@ -41,7 +41,7 @@ const router = createRouter({
 */
 /* let count = 0 */
 
-router.beforeEach((to) => {
+router.beforeEach((to, from) => {
   /* count++
   console.log('执行了多少次呢？' + count)
   console.log('to path' + ' ' + to.path, 'from path' + ' ' + from.path) */
@@ -56,6 +56,11 @@ router.beforeEach((to) => {
   if (to.path === '/main') {
     return firstMenu.url
   }
+
+  // console.log('打印from', from)
+  // console.log('打印to', to)
 })
+
+// console.log('这是router的index.ts文件')
 
 export default router

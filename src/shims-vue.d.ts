@@ -5,8 +5,8 @@ declare module '*.vue' {
   export default component
 }
 
-declare const VUE_APP_BASE_URL: string
+// declare const VUE_APP_BASE_URL: string
 
-declare const VUE_APP_NODE_ENV: string
+// declare const VUE_APP_NODE_ENV: string
 
 declare module '*.json'

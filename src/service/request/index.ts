@@ -97,7 +97,7 @@ class XXRequest {
       this.interceptors?.responseInterceptorCatch
     )
   }
-
+ 
   /* 创建每个实例的每种请求才具有的拦截器(比如：get, post, push等，因此，需要
     对下面的代码进行改造) */
 
